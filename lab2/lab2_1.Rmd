@@ -17,7 +17,21 @@ output:
 3. Explain the difference between data classes in R.  
 4. Use R to identify the class of specific data.  
 5. Define NA in R.  
-6. Determine whether or not data have NA values.  
+6. Determine whether or not data have NA values.
+
+```{r}
+practice <- 20L
+```
+
+```{r}
+is.integer(practice)
+```
+
+```{r}
+practice <- as.numeric(practice) #this changes practice from an integer into a numeric
+```
+
+
 
 ## Objects
 In order to access the potential of R we need to assign values or other types of data to `objects`. There is a specific format that I want you to follow, so please pay close attention.  
@@ -36,6 +50,11 @@ Assign a value of 30 to a new object y.
 ```{r}
 y <- 30
 ```
+
+```{r}
+w <- 15
+```
+
 
 The = symbol works, but is not a convention followed by most programmers.
 ```{r}
@@ -140,10 +159,11 @@ is.integer(my_numeric) #is my_numeric an integer?
 ```{r}
 my_integer <- 
   as.integer(my_numeric) #create a new object specified as an integer
+#this can be used to change the class of an object
 ```
 
 ```{r}
-is.integer(my_integer) #is my_numeric an integer?
+is.integer(my_integer) #is my_integer an integer?
 ```
 
 ## Missing Data
@@ -176,7 +196,15 @@ mean(new_vector)
 
 3. How do you interpret this result? What does this mean about NAs?  
 
-4. Recalculate the mean using the following code chunk. Why is the useful?  
+I interpret this result to mean that the missing NA value causes the calculated mean to be invalid. R will not make calculations with missing pieces of data. 
+
+4. Recalculate the mean using the following code chunk. Why is this useful?
+
+```{r}
+mean(new_vector, na.rm=T) # na.rm can be used to remove NAs from our data.
+```
+
+This is useful because it lets us calculate the mean by ignoring the NAs. It allows R to ignore the NAs.
 
 ## That's it! Let's take a break and then move on to part 2!
 
