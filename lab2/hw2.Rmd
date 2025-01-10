@@ -66,6 +66,7 @@ mountains <- data.frame(name, height_f, height_m, first_climbed, summits, fatali
 **10. Write your data frame to a .csv file.**
 ```{r}
 write.csv(mountains, "mountains_data.csv", row.names=FALSE)
+mountains
 ```
 
 ## Knit and Upload

@@ -1,7 +1,7 @@
 ---
 title: "Homework 2"
 author: "William Holley"
-date: "2025-01-09"
+date: "2025-01-10"
 output:
   html_document: 
     theme: spacelab
@@ -95,6 +95,16 @@ mountains <- data.frame(name, height_f, height_m, first_climbed, summits, fatali
 
 ``` r
 write.csv(mountains, "mountains_data.csv", row.names=FALSE)
+mountains
+```
+
+```
+##            name height_f height_m first_climbed summits fatalities
+## 1 Mount Everest    29032     8849          1953   12884        335
+## 2            K2    28251     8611          1954     800         96
+## 3 Kangchenjunga    28169     8586          1955     532         52
+## 4        Lhotse    27940     8516          1956     933         20
+## 5        Makalu    27838     8485          1955     499         22
 ```
 
 ## Knit and Upload

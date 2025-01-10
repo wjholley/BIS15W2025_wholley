@@ -11,7 +11,7 @@
 
 <meta name="author" content="William Holley" />
 
-<meta name="date" content="2025-01-09" />
+<meta name="date" content="2025-01-10" />
 
 <title>Homework 2</title>
 
@@ -376,7 +376,7 @@ display: none;
 
 <h1 class="title toc-ignore">Homework 2</h1>
 <h4 class="author">William Holley</h4>
-<h4 class="date">2025-01-09</h4>
+<h4 class="date">2025-01-10</h4>
 
 </div>
 
@@ -437,7 +437,14 @@ a new vector <code>fatalities</code> and add it to the
 <pre class="r"><code>fatalities &lt;- c(335, 96, 52, 20, 22)
 mountains &lt;- data.frame(name, height_f, height_m, first_climbed, summits, fatalities)</code></pre>
 <p><strong>10. Write your data frame to a .csv file.</strong></p>
-<pre class="r"><code>write.csv(mountains, &quot;mountains_data.csv&quot;, row.names=FALSE)</code></pre>
+<pre class="r"><code>write.csv(mountains, &quot;mountains_data.csv&quot;, row.names=FALSE)
+mountains</code></pre>
+<pre><code>##            name height_f height_m first_climbed summits fatalities
+## 1 Mount Everest    29032     8849          1953   12884        335
+## 2            K2    28251     8611          1954     800         96
+## 3 Kangchenjunga    28169     8586          1955     532         52
+## 4        Lhotse    27940     8516          1956     933         20
+## 5        Makalu    27838     8485          1955     499         22</code></pre>
 </div>
 <div id="knit-and-upload" class="section level2">
 <h2>Knit and Upload</h2>
