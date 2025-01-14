@@ -32,15 +32,42 @@ name <- c("Jill", "Susan", "Steve", "Jill", "Susan", "Steve", "Jill", "Susan", "
 spring <- c("Buckeye", "Buckeye", "Buckeye", "Benton", "Benton", "Benton", "Travertine", "Travertine", "Travertine")
 ```
 
-1. Build a data frame called `hsprings` with the above data. Name the temperature column `temp_C`. Print out the data frame.  
+1. Build a data frame called `hsprings` with the above data. Name the temperature column `temp_C`. Print out the data frame.
 
-2. Change the column titled `name` to `scientist`, leave the other column names the same. Print out the data frame names.  
+```{r}
+#hsprings <- data.frame(temp, name, spring)
+hsprings <- tibble(name, temp, spring)
+hsprings
+```
+
+
+2. Change the column titled `name` to `scientist`, leave the other column names the same. Print out the data frame names.
+
+```{r}
+hsprings <- tibble(scientist=name, temp_C=temp, spring)
+hsprings
+```
 
 3. Our scientists forgot to record the depth data for each spring. Here it is as a vector, add it as a new column called depth_ft: `c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)`. Print out the data frame.
 
+```{r}
+depth_ft <- c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)
+hsprings <- tibble(scientist=name,temp_c=temp, spring, depth_ft)
+hsprings
+```
+
 4. Calculate the mean temperature of all of the temperature measurements.
 
+```{r}
+mean(temp)
+mean(hsprings$temp_c)
+```
+
 5. Save your hot springs data as a `.csv` file! Do not allow row names. 
+
+```{r}
+write.csv(hsprings, "hsprings_data.csv", row.names = FALSE)
+```
 
 6. Go to the environment panel and push the broom to clear your environment.  
 
@@ -101,6 +128,11 @@ levels(hot_springs$spring)
 
 ## Practice
 1. As part of homework 2, you saved data on the five tallest mountains in the world. Reload that data below and use the `str()` function to explore it's structure.  
+
+```{r}
+mountains <- read_csv("../lab2/mountains_data.csv")
+str(mountains)
+```
 
 ## That's it! Let's take a break and then move on to part 2! 
 

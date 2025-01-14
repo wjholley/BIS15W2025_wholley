@@ -20,9 +20,12 @@ library("jpeg")
 
 ## Review from last time
 ### *With a partner, discuss the following questions*
-1. What is a path? How do we know that we have a correct path?  
-2. What is a local path? What is a global path?  
-3. How does a path relate to a working directory in R?  
+1. What is a path? How do we know that we have a correct path?
+A path is a location of a file.
+2. What is a local path? What is a global path?
+A local path is a path on your own computer. A global path could be something in the cloud that can be accessed publically, such as through a URL.
+3. How does a path relate to a working directory in R?
+
 
 ## Shut Down Procedures
 1. Save your work.  
