@@ -1,7 +1,7 @@
 ---
 title: "Homework 3"
 author: "William Holley"
-date: "2025-01-14"
+date: "2025-01-19"
 output:
   html_document: 
     theme: spacelab
@@ -132,7 +132,7 @@ summary(homerange)
 ##  Max.   :530.000                      
 ##  NA's   :502
 ```
-preymass, log10.preymass, and PPMR all have 502 NAs
+preymass, log10.preymass, and PPMR all have 502 NAs.
 
 **4. What are the names of the columns in the dataframe?**
 
@@ -157,6 +157,7 @@ names(homerange)
 
 **5. Based on the summary output, do you see anything in the data that looks strange? Think like a biologist and consider the variables.**  
 
+There are many abnormalities and quirks in the data. One variable that caught my eye was the "dimension" variable, because all of its entries are either 2 or 3. I was trying to figure out what the authors of the data meant by "dimension" so I used the DOI number to find their paper and figure it out. "dimension" refers to the foraging dimension of the animal, animals that can forage in 3 dimensions, such as fish or birds, are assigned 3, and animals that forage in "2" dimensions, such as camels or cows, are assigned 2. Although there are no issues with this data itself, I feel like the variable dimension should have a more descriptive name such as "foraging.dimension" to make it more clear. Another issue I noticed is the large amount of NAs within the data. A few are okay, but after a certain point they become detrimental to any calculations performed.
 
 **6. The `min` and `max` functions can be used to find the minimum and maximum values in a vector. Use these functions to find the minimum and maximum values for the variable `mean.mass.g`.**  
 
@@ -181,6 +182,42 @@ max(homerange[ ,10])
 ``` r
 homerange$taxon <- as.factor(homerange$taxon)
 homerange$order <- as.factor(homerange$order)
+```
+
+
+``` r
+levels(homerange$taxon)
+```
+
+```
+## [1] "birds"         "lake fishes"   "lizards"       "mammals"      
+## [5] "marine fishes" "river fishes"  "snakes"        "tortoises"    
+## [9] "turtles"
+```
+
+
+``` r
+levels(homerange$order)
+```
+
+```
+##  [1] "accipitriformes"       "afrosoricida"          "anguilliformes"       
+##  [4] "anseriformes"          "apterygiformes"        "artiodactyla"         
+##  [7] "caprimulgiformes"      "carnivora"             "charadriiformes"      
+## [10] "columbidormes"         "columbiformes"         "coraciiformes"        
+## [13] "cuculiformes"          "cypriniformes"         "dasyuromorpha"        
+## [16] "dasyuromorpia"         "didelphimorphia"       "diprodontia"          
+## [19] "diprotodontia"         "erinaceomorpha"        "esociformes"          
+## [22] "falconiformes"         "gadiformes"            "galliformes"          
+## [25] "gruiformes"            "lagomorpha"            "macroscelidea"        
+## [28] "monotrematae"          "passeriformes"         "pelecaniformes"       
+## [31] "peramelemorphia"       "perciformes"           "perissodactyla"       
+## [34] "piciformes"            "pilosa"                "proboscidea"          
+## [37] "psittaciformes"        "rheiformes"            "roden"                
+## [40] "rodentia"              "salmoniformes"         "scorpaeniformes"      
+## [43] "siluriformes"          "soricomorpha"          "squamata"             
+## [46] "strigiformes"          "struthioniformes"      "syngnathiformes"      
+## [49] "testudines"            "tinamiformes"          "tetraodontiformes\xa0"
 ```
 
 **8. Use `select` to pull out the variables taxon and common.name.**  

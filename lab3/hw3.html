@@ -11,7 +11,7 @@
 
 <meta name="author" content="William Holley" />
 
-<meta name="date" content="2025-01-14" />
+<meta name="date" content="2025-01-19" />
 
 <title>Homework 3</title>
 
@@ -376,7 +376,7 @@ display: none;
 
 <h1 class="title toc-ignore">Homework 3</h1>
 <h4 class="author">William Holley</h4>
-<h4 class="date">2025-01-14</h4>
+<h4 class="date">2025-01-19</h4>
 
 </div>
 
@@ -485,7 +485,7 @@ determine which variables have more or less NA’s.</strong></p>
 ##  3rd Qu.: 15.966                      
 ##  Max.   :530.000                      
 ##  NA&#39;s   :502</code></pre>
-<p>preymass, log10.preymass, and PPMR all have 502 NAs</p>
+<p>preymass, log10.preymass, and PPMR all have 502 NAs.</p>
 <p><strong>4. What are the names of the columns in the
 dataframe?</strong></p>
 <pre class="r"><code>names(homerange)</code></pre>
@@ -504,6 +504,19 @@ dataframe?</strong></p>
 <p><strong>5. Based on the summary output, do you see anything in the
 data that looks strange? Think like a biologist and consider the
 variables.</strong></p>
+<p>There are many abnormalities and quirks in the data. One variable
+that caught my eye was the “dimension” variable, because all of its
+entries are either 2 or 3. I was trying to figure out what the authors
+of the data meant by “dimension” so I used the DOI number to find their
+paper and figure it out. “dimension” refers to the foraging dimension of
+the animal, animals that can forage in 3 dimensions, such as fish or
+birds, are assigned 3, and animals that forage in “2” dimensions, such
+as camels or cows, are assigned 2. Although there are no issues with
+this data itself, I feel like the variable dimension should have a more
+descriptive name such as “foraging.dimension” to make it more clear.
+Another issue I noticed is the large amount of NAs within the data. A
+few are okay, but after a certain point they become detrimental to any
+calculations performed.</p>
 <p><strong>6. The <code>min</code> and <code>max</code> functions can be
 used to find the minimum and maximum values in a vector. Use these
 functions to find the minimum and maximum values for the variable
@@ -516,6 +529,28 @@ functions to find the minimum and maximum values for the variable
 <code>order</code> to factors and display their levels.</strong></p>
 <pre class="r"><code>homerange$taxon &lt;- as.factor(homerange$taxon)
 homerange$order &lt;- as.factor(homerange$order)</code></pre>
+<pre class="r"><code>levels(homerange$taxon)</code></pre>
+<pre><code>## [1] &quot;birds&quot;         &quot;lake fishes&quot;   &quot;lizards&quot;       &quot;mammals&quot;      
+## [5] &quot;marine fishes&quot; &quot;river fishes&quot;  &quot;snakes&quot;        &quot;tortoises&quot;    
+## [9] &quot;turtles&quot;</code></pre>
+<pre class="r"><code>levels(homerange$order)</code></pre>
+<pre><code>##  [1] &quot;accipitriformes&quot;       &quot;afrosoricida&quot;          &quot;anguilliformes&quot;       
+##  [4] &quot;anseriformes&quot;          &quot;apterygiformes&quot;        &quot;artiodactyla&quot;         
+##  [7] &quot;caprimulgiformes&quot;      &quot;carnivora&quot;             &quot;charadriiformes&quot;      
+## [10] &quot;columbidormes&quot;         &quot;columbiformes&quot;         &quot;coraciiformes&quot;        
+## [13] &quot;cuculiformes&quot;          &quot;cypriniformes&quot;         &quot;dasyuromorpha&quot;        
+## [16] &quot;dasyuromorpia&quot;         &quot;didelphimorphia&quot;       &quot;diprodontia&quot;          
+## [19] &quot;diprotodontia&quot;         &quot;erinaceomorpha&quot;        &quot;esociformes&quot;          
+## [22] &quot;falconiformes&quot;         &quot;gadiformes&quot;            &quot;galliformes&quot;          
+## [25] &quot;gruiformes&quot;            &quot;lagomorpha&quot;            &quot;macroscelidea&quot;        
+## [28] &quot;monotrematae&quot;          &quot;passeriformes&quot;         &quot;pelecaniformes&quot;       
+## [31] &quot;peramelemorphia&quot;       &quot;perciformes&quot;           &quot;perissodactyla&quot;       
+## [34] &quot;piciformes&quot;            &quot;pilosa&quot;                &quot;proboscidea&quot;          
+## [37] &quot;psittaciformes&quot;        &quot;rheiformes&quot;            &quot;roden&quot;                
+## [40] &quot;rodentia&quot;              &quot;salmoniformes&quot;         &quot;scorpaeniformes&quot;      
+## [43] &quot;siluriformes&quot;          &quot;soricomorpha&quot;          &quot;squamata&quot;             
+## [46] &quot;strigiformes&quot;          &quot;struthioniformes&quot;      &quot;syngnathiformes&quot;      
+## [49] &quot;testudines&quot;            &quot;tinamiformes&quot;          &quot;tetraodontiformes\xa0&quot;</code></pre>
 <p><strong>8. Use <code>select</code> to pull out the variables taxon
 and common.name.</strong></p>
 <pre class="r"><code>select(homerange, taxon, order)</code></pre>

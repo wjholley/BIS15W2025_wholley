@@ -47,7 +47,7 @@ names(homerange)
 
 **5. Based on the summary output, do you see anything in the data that looks strange? Think like a biologist and consider the variables.**  
 
-There are many abnormalities and quirks in the data. One variable that caught my eye was the "dimension" variable, because all of its entries are either 2 or 3. I was trying to figure out what the authors of the data meant by "dimension" so I used the DOI number to find their paper and figure it out. "dimension" refers to the foraging dimension of the animal, animals that can forage in 3 dimensions, such as fish or birds, are assigned 3, and animals that forage in "2" dimensions, such as camels or cows, are assigned 2. Although there are no issues with this data itself, I feel like the variable dimension should have a more descriptive name such as "foraging.dimension" to make it more clear. Another issue is with N
+There are many abnormalities and quirks in the data. One variable that caught my eye was the "dimension" variable, because all of its entries are either 2 or 3. I was trying to figure out what the authors of the data meant by "dimension" so I used the DOI number to find their paper and figure it out. "dimension" refers to the foraging dimension of the animal, animals that can forage in 3 dimensions, such as fish or birds, are assigned 3, and animals that forage in "2" dimensions, such as camels or cows, are assigned 2. Although there are no issues with this data itself, I feel like the variable dimension should have a more descriptive name such as "foraging.dimension" to make it more clear. Another issue I noticed is the large amount of NAs within the data. A few are okay, but after a certain point they become detrimental to any calculations performed.
 
 **6. The `min` and `max` functions can be used to find the minimum and maximum values in a vector. Use these functions to find the minimum and maximum values for the variable `mean.mass.g`.**  
 ```{r}
@@ -59,6 +59,14 @@ max(homerange[ ,10])
 ```{r}
 homerange$taxon <- as.factor(homerange$taxon)
 homerange$order <- as.factor(homerange$order)
+```
+
+```{r}
+levels(homerange$taxon)
+```
+
+```{r}
+levels(homerange$order)
 ```
 
 **8. Use `select` to pull out the variables taxon and common.name.**  
