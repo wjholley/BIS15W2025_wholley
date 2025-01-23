@@ -34,4 +34,16 @@ You will need the tidyverse to complete the warm-up- be sure to load the library
 1. Load the fish data. 
 2. Transform the fish data to only include the variables lakeid and length.  Store this as a new dataframe called "fishlength".   
 3. Filter the `fish` data to include the samples from lake "BO".  
-4. Calculate the mean length of fish from lake "BO".  
+4. Calculate the mean length of fish from lake "BO".
+
+```{r message=FALSE, warning=FALSE}
+library("tidyverse")
+```
+
+```{r}
+fish <- read_csv("/Users/wholley/Desktop/BIS15W2025_wholley/lab4/data/Gaeta_etal_CLC_data.csv")
+fishlength <- select(fish, lakeid, length)
+fishbo <- filter(fishlength, lakeid == "BO")
+mean(fishbo$length)
+```
+

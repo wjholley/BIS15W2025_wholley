@@ -41,7 +41,7 @@ mammals <- rename(mammals, genus="Genus", wean_mass="wean mass", max_life= "max.
 
 Do you remember the easier way?
 ```{r}
-
+mammals <- clean_names(mammals)
 ```
 
 ## Review
@@ -52,27 +52,28 @@ glimpse(fish)
 
 Let's convert `lakeid` to a factor and have a look at which states are represented in the data.  
 ```{r}
-fish$lakeid <- as.factor(fish$lakeid)
+fish$lakeid <- as.factor(fish$lakeid) #change class ofa variable
 ```
 
 ```{r}
-
+glimpse(fish)
 ```
 
 Now we can pull out any state of interest.  
 ```{r}
-
+filter(fish, lakeid == "CR")
 ```
 
 ## Using `filter()` on multiple conditions
 You can also use `filter()` to extract data based on multiple conditions. Below we extract only the fish that have lakeid "AL" and length >350.
 ```{r}
-
+filter(fish, lakeid == "AL" & 350 < length)
 ```
 
 Notice that the `|` operator generates a different result. Why?
+It appears to return results where either condition is true.
 ```{r}
-
+filter(fish, lakeid == "AL" | 350 < length)
 ```
 
 Rules:  
@@ -83,27 +84,36 @@ Rules:
 
 In this case, we filter out the fish with a length over 400 and a scale length over 11 or a radii length over 8.
 ```{r}
-
+filter(fish, !400 < length & !11 < scalelength | !8 < radii_length_mm)
 ```
 
 ## Practice  
 1.  From the `mammals` data, filter all members of the family Bovidae with a mass greater than 450000.
 ```{r}
-
+filter(mammals, family == "Bovidae", 450000 < mass)
 ```
 
 2. From the `mammals` data, build a data frame that compares `mass`, `gestation`, and `newborn` among the primate genera `Lophocebus`, `Erythrocebus`, and `Macaca`. Among these genera, which species has the smallest `newborn` mass?
 ```{r}
-
+primates <- filter(mammals, genus == "Lophocebus" | genus == "Erythrocebus" | genus == "Macaca")
+primates <- select(primates, genus, species, mass, gestation, newborn)
 ```
 
 ```{r}
-
+primates
 ```
+```{r}
+filter(primates, newborn == min(primates$newborn))
+```
+The species maura of genus Macaca has the smallest newborn mass of 389.5.
+
 
 3. From the `mammals` data, filter all members of the family `Felidae` with a gestation period less than 3 months. As part of this, remove all variables except `genus`, `family`, and `gestation`. Lastly, remove all NA's in the variable `gestation`- in this data they are represented by -999.
 ```{r}
-
+felidae <- filter(mammals, family == "Felidae" & gestation < 3)
+felidae <- select(felidae, genus, family, gestation)
+felidae <- filter(felidae, !gestation == -999)
+felidae
 ```
 
 ## That's it! Let's take a break and then move on to part 2!  

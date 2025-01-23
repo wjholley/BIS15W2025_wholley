@@ -56,18 +56,25 @@ filter(fish, lakeid == "AL")
 ```
 
 ```{r}
-
+fish %>% #specifies the data frame 
+  select(lakeid, scalelength) %>% #piped into select
+  filter(lakeid == "AL") #piped into filter
 ```
 
 Here we select family, genus, and species then filter for gestation greater than 15 months.
 ```{r}
-
+mammals %>% #specify the df
+  select(family, genus, species, gestation) %>% #pipe into select
+  filter(gestation > 15) #pipe into filter
 ```
 
 ## Practice
 1. We are interested in the fish from the lakes "AL" and "AR" with a radii length between 2 and 4. Extract this information from the `fish` data. Use pipes!  
 ```{r}
-
+fish %>% 
+  select(lakeid, radii_length_mm) %>% 
+  filter(lakeid == "AL" | lakeid == "AR" & between(radii_length_mm, 2, 4)) %>% 
+  arrange(desc(radii_length_mm))
 ```
 
 ## `arrange()`
@@ -87,20 +94,28 @@ fish %>%
 
 `arrange()` can be very helpful in combination with the other functions.
 ```{r}
-
+fish %>% 
+  select(lakeid, length, fish_id, scalelength) %>% 
+  filter(lakeid == "AL") %>% 
+  arrange(fish_id)
 ```
 
 ## Practice
 1. We are interested in the radii length and scalelength of fish with the id `300`. Extract this information from the `fish` data. Please sort the data by radii length.
 ```{r}
-
+fish %>% 
+  select(radii_length_mm, scalelength, fish_id) %>% 
+  filter(fish_id == 300)
 ```
 
 2. Let's re-do question #3 from part 1, but this time using pipes.  
 
 From the `mammals` data, filter all members of the family `Felidae` with a gestation period less than 3 months. As part of this, remove all variables except `genus`, `family`, and `gestation`. Lastly, remove all NA's in the variable `gestation`- in this data they are represented by -999. Sort by gestation.
 ```{r}
-
+mammals %>% 
+  select(genus, family, genus, species, gestation) %>% 
+  filter(family == "Felidae" & gestation < 3 & !gestation == -999) %>% 
+  arrange(-gestation)
 ```
 
 ## `mutate()`  
@@ -108,18 +123,28 @@ Mutate allows us to create a new column from existing columns in a data frame. W
 
 Let's convert the `scalelength` variable from millimeters to centimeters.  
 ```{r}
-
+fish %>% 
+  select(scalelength) %>% 
+  mutate(scalelength_cm = scalelength/10)
 ```
 
 ## Practice
 1. In the mammals data, let's convert the mass variable from grams to kilograms.  Don't forget to remove those pesky -999's and arrange in descending order.
 ```{r}
-
+mammals %>% 
+  select(mass) %>% 
+  filter(!mass == -999) %>% 
+  mutate(mass_kg = mass/1000) %>% 
+  arrange(-mass_kg)
 ```
 
 2. Using the mammals data, compare wean mass to gestation. Create a new column that calculates the ratio of wean mass to gestation. Arrange the data by this ratio in descending order. Don't forget to remove the -999's from wean mass and gestation.
 ```{r}
-
+mammals %>% 
+  select(wean_mass, gestation) %>% 
+  filter(!wean_mass == -999 | !gestation == -999) %>% 
+  mutate(ratio = wean_mass/gestation) %>% 
+  arrange(-ratio)
 ```
 
 ## Wrap-up  
