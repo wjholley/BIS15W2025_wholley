@@ -79,9 +79,10 @@ The average all species diversity is greatest for national parks.
 ```{r}
 gabon %>%
   select(transect_id, ra_elephant, land_use) %>% 
-  filter(ra_elephant == max(gabon$ra_elephant))
+  filter(ra_elephant == max(ra_elephant)) %>% 
+  arrange(ra_elephant)
 ```
-Transect 18 has the highest relative abundance of elephants. It's primary land use is logging. I am not sure how we should use arrange here as there is only 1 result.
+Transect 18 has the highest relative abundance of elephants. Its primary land use is logging.
 
 **8. Use `filter` to find all transects that have greater than 15 tree species or a breast height diameter between 50 and 60cm.  **
 ```{r}
@@ -101,11 +102,25 @@ Transects 1, 2, 3, 4, 5, 6, 14, 22, and 24 all fit the criteria. 1, 2, 4, 5, 6, 
 
 **10. Explore the data! Develop one question on your own that includes at least two lines of code. **
 
+What is the relationship between the relative abundance of rodents and the large vertebrate community evenness?
 
 
 ```{r}
+rodent_v_even <- select(gabon, ra_rodent, evenness_all_species)
+lm_rodent_v_even <- lm(evenness_all_species ~ ra_rodent, data = rodent_v_even)
 
+gabon %>% 
+  select(ra_rodent, evenness_all_species) %>% 
+  plot
+
+abline(lm_rodent_v_even)
 ```
+
+```{r}
+summary(lm_rodent_v_even)
+```
+
+Based on the scatterplot and the line of best fit, there appears to be a weak negative association between the relative abundance of rodents and the species evenness of large vertebrates. After seeing the scatterplot, I checked the p-value of the linear regression and saw that it is 0.292 with 1 and 22 degrees of freedom. Because the p-value of 0.292 is greater than 0.05, I fail to reject the null hypothesis of no association between the relative abundance of rodents and the species evenness of large vertebrates.
 
 ## Knit and Upload
 Please knit your work as a .pdf or .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
