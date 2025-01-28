@@ -28,16 +28,20 @@ superhero_powers <- read_csv("data/super_hero_powers.csv", na = c("", "-99", "-"
 
 1. For the superhero_info data, how many bad, good, and neutral superheros are there? Try using count() and/ or tabyl().
 ```{r}
-
+superhero_info %>% 
+  tabyl(alignment)
 ```
 
 ```{r}
-
+superhero_info %>% 
+  count(alignment)
 ```
 
 2. Notice that we have some bad superheros! Who are they? List their names below.  
 ```{r}
-
+superhero_info %>% 
+  select(name, alignment) %>% 
+  filter(alignment == "bad")
 ```
 
 ```{r}
@@ -46,63 +50,77 @@ superhero_powers <- read_csv("data/super_hero_powers.csv", na = c("", "-99", "-"
 
 3. How many distinct "races" are represented in `superhero_info`?
 ```{r}
-
+superhero_info %>% 
+  summarize(race_n = n_distinct(race))
 ```
+62 distinct races.
 
 ## Good and Bad
 4. Let's make two different data frames, one focused on the "good guys" and another focused on the "bad guys".
 ```{r}
-
+good <- superhero_info %>% 
+  filter(alignment == "good")
 ```
 
 ```{r}
-
+bad <- superhero_info %>% 
+  filter(alignment == "bad")
 ```
 
 5. Who are the good Vampires?
 ```{r}
-
+good %>% 
+  filter(race == "Vampire")
 ```
+Angel and Blade
 
 6. Who has the height advantage- bad guys or good guys? Convert their height to meters and sort from tallest to shortest.  
 ```{r}
-
+good %>%
+  select(name, height) %>% 
+  mutate(height_m = height/100) %>% 
+  arrange(-height_m)
 ```
 
 ```{r}
-
+bad %>%
+  select(name, height) %>% 
+  mutate(height_m = height/100) %>% 
+  arrange(-height_m)
 ```
+The good guys seem to have a height advantage, with their tallest member being almost 3x as tall as the tallest member of the bad guys.
 
 ## `superhero_powers`
 Have a quick look at the `superhero_powers` data frame.  
 
 7. How many superheros have a combination of agility, stealth, super_strength, and stamina?
 ```{r}
-
+superhero_powers %>% 
+  filter(agility == TRUE, stealth == TRUE, super_strength == TRUE, stamina == TRUE) %>% 
+  count()
 ```
-
-```{r}
-
-```
+40 have the above combination.
 
 8. Who is the most powerful superhero? Have a look at the code chunk below. Use the internet to annotate each line of code so you know how it works. It's OK to use AI to help you with this task.
 ```{r}
 superhero_powers %>%
-  mutate(across(-1, ~ ifelse(. == TRUE, 1, 0))) %>% 
-  mutate(total_powers = rowSums(across(-1))) %>% 
-  select(hero_names, total_powers) %>% 
-  arrange(-total_powers)
+  mutate(across(-1, ~ ifelse(. == TRUE, 1, 0))) %>% #converts trues to 1 and falses to 0 for every column except for column 1, which holds the hero names
+  mutate(total_powers = rowSums(across(-1))) %>% #sums the rows to find which heroes have the most powers in total
+  select(hero_names, total_powers) %>% #selects the variables hero_names and total_powers to be displayed
+  arrange(-total_powers) #sorts the total powers in descending order
 ```
 
 ## Your Favorite
 9. Pick your favorite superhero and let's see their powers!  
 ```{r}
-
+superhero_powers %>% 
+  filter(hero_names == "Sauron") 
 ```
 
 10. Can you find your hero in the superhero_info data? Show their info!  
 ```{r}
-
+superhero_info %>% 
+  filter(name == "Sauron")
 ```
 
 ## Knit and Upload

@@ -29,13 +29,18 @@ S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant 
 Recall that we use pipes to connect the output of code to a subsequent function. This makes our code cleaner and more efficient. One way we can use pipes is to attach the `clean_names()` function from janitor to the `read_csv()` output.  
 ```{r}
 mammals <- read_csv("data/mammal_lifehistories_v2.csv") %>% clean_names()
+
 ```
 
 ## `mutate()`  
 Recall that mutate allows us to create a new column from existing columns in a data frame. Use `mutate()` to make a new column that converts gestation to years. Which animal has the longest gestation period?
 ```{r}
-
+mammals %>%
+  select(genus, species, gestation) %>% 
+  mutate(gestation_years = (gestation/12)) %>% 
+  arrange(-gestation_years)
 ```
+The African Elephant has the longest gestation period at 1.79 years.
 
 ## `mutate()` and across()
 This last function is super helpful when cleaning data. With "wild" data, there are often mixed entries (upper and lowercase), blank spaces, odd characters, etc. These all need to be dealt with before analysis.  
@@ -80,24 +85,34 @@ mammals %>%
 ```
 
 ## Practice
-1. We are interested in the family, genus, species and max life variables. Because the max life span for several mammals is unknown, the authors have use -999 in place of NA. Replace all of these values with NA in a new column titled `max_life_new`. Then convert `max_life_new` into years. Finally, sort the date in descending order by max_life_new. Which mammal has the longest life span?
+1. We are interested in the family, genus, species and max life variables. Because the max life span for several mammals is unknown, the authors have use -999 in place of NA. Replace all of these values with NA in a new column titled `max_life_new`. Then convert `max_life_new` into years. Finally, sort the data in descending order by max_life_new. Which mammal has the longest life span?
 ```{r}
-
+mammals %>% 
+  select(family, genus, species, max_life) %>% #pulls out variables of interest
+  mutate(max_life_new = ifelse(max_life == -999.00, NA, max_life)) %>% #replaces the -999 with NA
+  mutate(max_life_new = (max_life_new/12)) %>% #converts max_life_new from months to years
+  arrange(-max_life_new)
 ```
+The physalus has the longest max life at 114 years.
 
 2. Build a new data frame `msleep24` from the `msleep` data that: contains the `name` and `vore` variables along with a new column called `sleep_total_24` which is the amount of time a species sleeps expressed as a proportion of a 24-hour day. Restrict the `sleep_total_24` values to less than or equal to 0.3. Arrange the output in descending order.  
 ```{r}
-
+msleep24 <- msleep %>% 
+  mutate(sleep_total_24 = (sleep_total/24)) %>% 
+  select(name, sleep_total_24, vore) %>% 
+  filter(sleep_total_24<=0.3) %>% 
+  arrange(-sleep_total_24)
+msleep24
 ```
 
 Did `dplyr` do what we expected? How do we check our output? Remember, just because your code runs it doesn't mean that it did what you intended.
 ```{r}
-#summary(msleep24)
+summary(msleep24)
 ```
 
 Histograms are also a quick way to check the output.
 ```{r}
-#hist(msleep24$sleep_total)
+hist(msleep24$sleep_total_24)
 ```
 
 ## That's it! Let's take a break and then move on to part 2! 
