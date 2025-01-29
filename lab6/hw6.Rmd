@@ -1,6 +1,6 @@
 ---
 title: "Homework 6"
-author: "Type Your Name Here"
+author: "William Holley"
 date: "`r Sys.Date()`"
 output:
   html_document: 
@@ -36,16 +36,13 @@ superhero_info %>%
 superhero_info %>% 
   count(alignment)
 ```
+There are 207 bad, 496 good, 24 neutral, and 7 uncategorized superheroes.
 
 2. Notice that we have some bad superheros! Who are they? List their names below.  
 ```{r}
 superhero_info %>% 
   select(name, alignment) %>% 
   filter(alignment == "bad")
-```
-
-```{r}
-
 ```
 
 3. How many distinct "races" are represented in `superhero_info`?
@@ -88,10 +85,15 @@ bad %>%
   mutate(height_m = height/100) %>% 
   arrange(-height_m)
 ```
-The good guys seem to have a height advantage, with their tallest member being almost 3x as tall as the tallest member of the bad guys.
+The good guys seem to have a height advantage, with their tallest member being almost 3x as tall as the tallest member of the bad guys. 
 
 ## `superhero_powers`
-Have a quick look at the `superhero_powers` data frame.  
+Have a quick look at the `superhero_powers` data frame.
+
+```{r}
+glimpse(superhero_powers)
+```
+
 
 7. How many superheros have a combination of agility, stealth, super_strength, and stamina?
 ```{r}
@@ -104,7 +106,7 @@ superhero_powers %>%
 8. Who is the most powerful superhero? Have a look at the code chunk below. Use the internet to annotate each line of code so you know how it works. It's OK to use AI to help you with this task.
 ```{r}
 superhero_powers %>%
-  mutate(across(-1, ~ ifelse(. == TRUE, 1, 0))) %>% #converts trues to 1 and falses to 0 for every column except for column 1, which holds the hero names
+  mutate(across(-1, ~ ifelse(. == TRUE, 1, 0))) %>% #converts true entries to 1 and false entries to 0 for every column except for column 1, which holds the hero names
   mutate(total_powers = rowSums(across(-1))) %>% #sums the rows to find which heroes have the most powers in total
   select(hero_names, total_powers) %>% #selects the variables hero_names and total_powers to be displayed
   arrange(-total_powers) #sorts the total powers in descending order
@@ -116,6 +118,7 @@ superhero_powers %>%
 superhero_powers %>% 
   filter(hero_names == "Sauron") 
 ```
+Sauron appears to have the powers of: accelerated healing, weapons master, longevity, intelligence, super strength, energy blasts, size changing, stamina, super speed, darkforce manipulation, magic, immortality, shapeshifting, fire control, invulnerability, enhanced hearing, enhanced sight, heat generation, resurrection, and weather control. 
 
 10. Can you find your hero in the superhero_info data? Show their info!  
 ```{r}
