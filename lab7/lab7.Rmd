@@ -52,13 +52,29 @@ penguins %>%
 
 What if we wanted to summarize basic statistics for each species? We could still use `filter()` but this is cumbersome. Show how you would do this below.
 ```{r}
+penguins %>%
+  filter(species == "Adelie") %>% 
+  summarize(mean_body_mass = mean(body_mass_g, na.rm = T), sd_body_mass = sd(body_mass_g, na.rm = T), n=n())
+```
+```{r}
+penguins %>%
+  filter(species == "Chinstrap") %>% 
+  summarize(mean_body_mass = mean(body_mass_g, na.rm = T), sd_body_mass = sd(body_mass_g, na.rm = T), n=n())
+```
 
+```{r}
+penguins %>%
+  filter(species == "Gentoo") %>% 
+  summarize(mean_body_mass = mean(body_mass_g, na.rm = T), sd_body_mass = sd(body_mass_g, na.rm = T), n=n())
 ```
 
 ## `group_by()`
 The `summarize()` function is most useful when used in conjunction with `group_by()`. This allows us to group data by a categorical variable(s) of interest.
 ```{r}
-
+penguins %>% 
+  group_by(species) %>% #grouping by a categorical variable. This doesn't work with numeric variables
+  summarize(mean_body_mass = mean(body_mass_g, na.rm = T), sd_body_mass = sd(body_mass_g, na.rm = T), n=n())
+  
 ```
 
 ## Practice
@@ -66,43 +82,86 @@ Use the built-in `msleep` data to answer the following questions.
 
 1. Calculate the min, max, mean, and total number of observations for body weight by feeding ecology in the msleep data.
 ```{r}
-
+msleep <- msleep
+msleep %>% 
+  group_by(vore) %>% 
+  summarize(mean_bodywt = mean(bodywt, na.rm = T), max_bodywt = max(bodywt, na.rm = T), min_bodywt = min(bodywt, na.rm = T), n=n())
 ```
 
 2. Calculate mean brain weight by taxonomic order in the msleep data.
 ```{r}
-
+msleep %>% 
+  group_by(order) %>% 
+  summarize(mean_brainwt = mean(brainwt, na.rm = F))
 ```
 
 3. Try running the code again, but this time add `na.rm=TRUE`. What is the problem with Cetacea?
 ```{r}
-
+msleep %>% 
+  group_by(order) %>% 
+  summarize(mean_brainwt = mean(brainwt, na.rm = T))
 ```
-
 ```{r}
-
+msleep %>% 
+  filter(order == "Cetacea") %>% 
+  select(order, genus, brainwt)
 ```
+
+
+There are no entries that are not NA in Cetacea.
 
 ## Review
 The summarize() and group_by() functions are powerful tools that we can use to produce clean summaries of data. Especially when used together, we can quickly group variables of interest and save time. You can also group by more than one categorical variable.
 
 What if we are interested in the number of observations (penguins) by species and island?
 ```{r}
-penguins %>% 
+x <- penguins %>% 
   group_by(species, island) %>% 
   summarize(n=n(), .groups= 'keep') #.groups= 'keep' is used to keep the grouping variable in the output
 ```
 
+```{r}
+y <- penguins %>% 
+  group_by(species, island) %>% 
+  summarize(n=n(), .groups= 'drop') 
+```
+
+```{r}
+z <- penguins %>% 
+  group_by(species, island) %>% 
+  summarize(n=n(), .groups= 'drop_last') #this is the default for some reason
+```
+
+```{r}
+x %>% summarize(n=n()) #all groups kept from x
+```
+```{r}
+y %>% summarize(n=n()) #all groups dropped from y
+```
+
+```{r}
+z %>% summarize(n=n()) #the last group (island) dropped from z
+```
+
+
+
+
 ## Practice
 1. How does the mean of `bill_length_mm` compare between penguin species?
 ```{r}
-
+penguins %>% 
+  group_by(species, island) %>% 
+  summarize(mean_bill_length_mm = mean(bill_length_mm, na.rm = T)) %>% 
+  arrange(-mean_bill_length_mm)
 ```
+Chinstraps from Dream have the longest mean bill length, followed by Gentoo from Biscoe and then Adelie from Biscoe, Torgersen, and Dream.
 
 2. For some penguins, their sex is listed as NA. Where do these penguins occur?
 ```{r}
-
+penguins %>% 
+  count(species, island, sex)
 ```
+There are NA sex penguins on Dream, Torgersen, and Biscoe.
 
 ## `across()`
 What about using `filter()` and `select()` across multiple variables? There is a function in dplyr called `across()` which is designed to work across multiple variables. Have a look at Rebecca Barter's awesome blog [here](http://www.rebeccabarter.com/blog/2020-07-09-across/).    
@@ -118,7 +177,11 @@ penguins %>%
 By using `across()` we can reduce the clutter and make things cleaner. 
 ```{r}
 penguins %>%
-  summarize(across(c(species, island, sex), n_distinct))
+  summarize(across(c(species, island, sex), n_distinct)) #this is deprecated 
+```
+```{r}
+penguins %>% 
+  summarize(across(c(species, island, sex), \(x) n_distinct(x, na.rm = T))) #this is the new method of doing so. The function takes x (each column that we specified) and applies n_distinct.
 ```
 
 This is very helpful for numeric variables.
@@ -127,6 +190,12 @@ penguins %>%
   summarize(across(where(is.numeric), mean, na.rm=T)) %>% 
   select(!year) #removes the year variable
 ```
+```{r}
+penguins %>% 
+  summarize(across(where(is.numeric), \(x) mean(x, na.rm = T))) %>% 
+  select(!year)
+```
+
 
 `group_by` also works.
 ```{r}
@@ -140,12 +209,16 @@ penguins %>%
 
 Mean
 ```{r}
-
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(contains("mm"), \(x) mean(x, na.rm = T)), n=n())
 ```
 
 Standard Deviation
 ```{r}
-
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(contains("mm"), list(mean=\(x) mean(x, na.rm = T), sd=\(x) sd(x, na.rm = T))), n=n())
 ```
 
 ## Wrap-up  
