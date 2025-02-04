@@ -10,6 +10,10 @@ library(janitor)
 msleep <- msleep
 clean_names(msleep)
 ```
+Before we do anything with our data, we have to load it.
+```{r}
+dataexample <- read_csv("/data/dataexample.csv")
+```
 
 Summary functions, such as summary() and glimpse() can provide early insights into the data.
 
@@ -89,6 +93,36 @@ We can use arrange() to display tables in a specified order.
 msleep %>% 
   arrange(-sleep_total) #arranges in descending order for sleep_total
 ```
+We can use across() to make more efficient code.
+```{r}
+msleep %>% 
+  summarize(mean_sleep_total = mean(sleep_total, na.rm = T),
+            mean_body_wt = mean(bodywt, na.rm = T),
+            mean_brain_wt = mean(brainwt, na.rm = T), n = n()) #this is a lot
+```
+```{r}
+msleep %>% 
+  summarize(across(c(sleep_total, bodywt, brainwt), \(x) mean(x, na.rm = T)))
+```
+There are other tools we can use to make this even easier.
+```{r}
+msleep %>% 
+  summarize(across(where(is.numeric), \(x) mean(x, na.rm = T))) #this calculates the mean of all numerics.
+```
+```{r}
+msleep %>% 
+  summarize(across(contains("wt"), \(x) mean(x, na.rm = T))) #this calculates the mean of all variables that contain "wt" in them.
+```
+We can even do multiple calculations at once using list()
+```{r}
+msleep %>% 
+  summarize(across(contains("wt"), list(mean=\(x) mean(x, na.rm = T), sd=\(x) sd(x, na.rm = T)))) #gives us both the mean and standard deviation of variables containing "wt"
+```
+
+
+
+
+
 
 
 
