@@ -82,7 +82,7 @@ We can even select what we want to mutate within a variable using ifelse()
 ```{r}
 msleep %>% 
   select(name, sleep_total) %>% 
-  mutate(sleep_total_fix = ifelse(10 < sleep_total, "lazy bum", "productive member of society"))
+  mutate(sleep_designation = ifelse(10 < sleep_total, "lazy bum", "productive member of society"))
 ```
 We can use arrange() to display tables in a specified order.
 ```{r}

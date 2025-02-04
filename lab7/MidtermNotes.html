@@ -600,9 +600,9 @@ mutate()</p>
 ifelse()</p>
 <pre class="r"><code>msleep %&gt;% 
   select(name, sleep_total) %&gt;% 
-  mutate(sleep_total_fix = ifelse(10 &lt; sleep_total, &quot;lazy bum&quot;, &quot;productive member of society&quot;))</code></pre>
+  mutate(sleep_designation = ifelse(10 &lt; sleep_total, &quot;lazy bum&quot;, &quot;productive member of society&quot;))</code></pre>
 <pre><code>## # A tibble: 83 × 3
-##    name                       sleep_total sleep_total_fix             
+##    name                       sleep_total sleep_designation           
 ##    &lt;chr&gt;                            &lt;dbl&gt; &lt;chr&gt;                       
 ##  1 Cheetah                           12.1 lazy bum                    
 ##  2 Owl monkey                        17   lazy bum                    
