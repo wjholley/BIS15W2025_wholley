@@ -67,7 +67,6 @@ fisheries %>%
 5. Based on the `asfis_species_name`, what are the top 5 most caught species? (note: "Osteichthyes" is not a species, it refers to unidentified fish. You should filter this one out.).
 ```{r}
 fisheries %>% 
-  select(asfis_species_name, catch) %>% 
   filter(asfis_species_name != "Osteichthyes") %>%
   group_by(asfis_species_name) %>% 
   summarize(most_caught_asfis_species_name = sum(catch, na.rm = T)) %>% 
@@ -88,7 +87,6 @@ Peru
 7. Which country had the largest overall catch between the years 2002-2012?
 ```{r}
 fisheries %>% 
-  select(country, catch, year) %>% 
   filter(between(year, 2002, 2012)) %>%
   group_by(country) %>% 
   summarize(overall_catch = sum(catch, na.rm = T)) %>% 
@@ -105,7 +103,6 @@ fisheries %>%
 Peru in 1970.
 ```{r}
 fisheries %>% 
-  select(country, year, catch) %>% 
   group_by(country, year) %>% 
   summarize(max_catch = max(catch, na.rm = T)) %>% 
   arrange(-max_catch)
@@ -121,23 +118,25 @@ sharks <- fisheries %>%
 10. Using the `sharks` dataframe, use `mutate()` to create a new column called `fishing_pressure` that is based on the total catch. If the total catch is greater than 75, the fishing pressure is considered "high", otherwise it is considered "moderate".
 ```{r}
 sharks_fishing_pressure <- sharks %>%
-  group_by(asfis_species_name) %>% 
-  summarize(total_catch_sharks = sum(catch, na.rm = T)) %>% 
-  mutate(fishing_pressure = ifelse(total_catch_sharks > 75, "high", "moderate"))
+  mutate(fishing_pressure = ifelse(catch > 75, "high", "moderate"))
 ```
 
 11. For sharks, how does the average catch differ between high and moderate fishing pressure?
 ```{r}
 sharks_fishing_pressure %>% 
   group_by(fishing_pressure) %>% 
-  summarize(average_catch_sharks = mean(total_catch_sharks, na.rm = T))
+  summarize(average_catch_sharks = mean(catch, na.rm = T))
 ```
 
 
 12. Perform one analysis of your choice on the fisheries dataframe that includes a minimum of three lines of code and two functions. Write a sentence or two that explains the intent of your code.
 ```{r}
-
+fisheries %>% 
+  group_by(year) %>% 
+  summarize(all_country_total_catch = sum(catch, na.rm = T)) %>%
+  arrange(-all_country_total_catch)
 ```
+The intent of this code was to check which year in the data had the highest total catch across all countries. From the output, we see that 2007 had the highest catch across every country.
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.   
