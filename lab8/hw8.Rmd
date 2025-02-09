@@ -95,7 +95,7 @@ amniota %>%
   select(egg_mass_g) %>% 
   miss_var_summary()
 ```
-These results do make sense biologically. It would not make sense if the mammals had data for egg mass because mammals do not lay eggs.
+These results do make sense biologically. It would not make sense if the mammals had data for egg mass because mammals do not lay eggs. For this data set, I would interpret NAs as both missing data, and for data that doesn't exist in the first place. For example, the researchers could have been unable to measure the mass of the eggs of a certain species of bird, resulting in an NA; or they could have been unable to measure the mass of a mammalian egg because mammals(excluding platapuses) do not lay eggs.
 
 **9. The `amphibio` data have variables that classify species as fossorial (burrowing), terrestrial, aquatic, or arboreal.Calculate the number of NA's in each of these variables. Do you think that the authors intend us to think that there are NA's in these columns or could they represent something else? Explain.**
 ```{r}
@@ -107,7 +107,8 @@ The authors seem to be using NA to mean false and 1 to mean true for these. They
 
 **10. Now that we know how NA's are represented in the `amniota` data, how would you load the data such that the values which represent NA's are automatically converted?**
 ```{r}
-
+read_csv("data/amniota.csv", na = c("-999", "NA")) %>% 
+  miss_var_summary()
 ```
 
 **11. Please complete the class project survey at: [BIS 15L Group Project](https://forms.gle/H2j69Z3ZtbLH3efW6)**
