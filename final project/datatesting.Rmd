@@ -1,5 +1,5 @@
 ---
-title: "Testing gigantic ass dataset"
+title: "Testing g"
 output: html_document
 date: "2025-02-16"
 ---
@@ -19,20 +19,18 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
 portosanto <- read_csv("data/landscapegenetics/PS_pipits_2016.csv") %>%
   clean_names()
-tenerife <- read.csv("data/landscapegenetics/TF_pipits_2011.csv") %>% 
+tenerife <- read_csv("data/landscapegenetics/TF_pipits_2011.csv") %>% 
   clean_names()
 strains <- read_csv("data/landscapegenetics/TF_PS_pipits.csv") %>% 
   clean_names()
 ```
+```{r}
 
-```{r}
-strains %>% 
-  filter(year == "2011")
 ```
-```{r}
-tenerife %>% 
-  filter(sample == "1111")
-```
+
+
+
+
 
 
 
