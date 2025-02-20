@@ -97,8 +97,10 @@ Month 10, October, has the most incidents.
 ```{r}
 sharks %>% 
   group_by(county, injury) %>% 
-  summarize(n_injury_type = n_distinct(incident_num)) %>% 
-  arrange(-n_injury_type)
+  summarize(n_injury_type = n_distinct(incident_num, na.rm = T), .groups = 'keep') %>% 
+  pivot_wider(names_from = injury, values_from = n_injury_type) %>% 
+  mutate(total = sum(none, minor, major, fatal, na.rm = T)) %>% 
+  arrange(-total)
 ```
 
 6. Use the table from #5 to make a plot that shows the total number of incidents by county.
@@ -107,8 +109,8 @@ sharks %>%
 sharks %>% 
   group_by(county, injury) %>% 
   summarize(n_injury_type = n_distinct(incident_num), .groups = 'keep') %>%  
-  ggplot(aes(x = reorder(county, n_injury_type), y = n_injury_type, fill = injury))+
-  geom_col(position = "dodge")+
+  ggplot(aes(x = county, y = n_injury_type, fill = injury))+
+  geom_col()+
   coord_flip()+
   labs(title = "Incidents by County per Injury Type", x = "County", y = "# of Incidents")
 ```
