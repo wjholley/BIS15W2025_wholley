@@ -97,6 +97,10 @@ deserts %>%
   geom_point()+
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
+```{r}
+deserts
+```
+
 
 ## Histograms
 Histograms show the distribution of continuous variables. As students, you have seen histograms of grade distributions. A histogram `bins` the data and you specify the number of bins that encompass a range of observations. For something like grades, this is easy because the number of bins corresponds to the grades A-F. By default, R uses a formula to calculate the number of bins but some adjustment may be required.  

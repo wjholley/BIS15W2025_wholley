@@ -12,7 +12,7 @@ clean_names(msleep)
 ```
 Before we do anything with our data, we have to load it.
 ```{r}
-dataexample <- read_csv("/data/dataexample.csv")
+#dataexample <- read_csv("/data/dataexample.csv")
 ```
 
 Summary functions, such as summary() and glimpse() can provide early insights into the data.
