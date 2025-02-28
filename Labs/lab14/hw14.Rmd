@@ -79,6 +79,7 @@ msleep %>%
   filter(vore != "NA") %>% 
   ggplot(aes(x = sleep_total, fill = vore))+
   geom_density(alpha = 0.5)+
+  theme_light()+
   labs(title = "Density of Sleep Totals for Each Vore", x = "Sleep Total", y = "Density")
 ```
 
@@ -86,9 +87,9 @@ msleep %>%
 ```{r, eval=F, echo=T}
 ui <- fluidPage(
   titlePanel("Sleep Related Stats by Diet"),
-  radioButtons("fill", 
-               "Select Fill Variable", 
-               choices = unique(msleep$vore), 
+  radioButtons("vore", 
+               "Select Diet Type", 
+               choices = c("carni", "herbi", "insecti", "omni"), 
                selected = "carni"),
   
   plotOutput("plot")
@@ -99,8 +100,9 @@ server <- function(input, output, session) {
   output$plot <- renderPlot({
     
     msleep %>% 
-    ggplot(aes(x = sleep_total, fill = input$fill))+ 
-      geom_density()+
+      filter(vore == input$vore) %>% 
+    ggplot(aes(x = sleep_total))+ 
+      geom_density(color = "black", fill = "steelblue", alpha = 0.5)+
       theme_light()+
       labs(x = "Sleep Total")
   })
