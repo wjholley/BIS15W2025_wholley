@@ -185,6 +185,138 @@ qpcr_long <- qpcr_untidy %>%
                values_to = "mRNA_expression")
 qpcr_long
 ```
+We can also separate at a specific character.
+```{r}
+qpcr_untidy %>% 
+  pivot_longer(-gene,
+               names_to = c("experiment", "replicate"),
+               names_sep = 5,
+               values_to = "mRNA_expression")
+```
+However the _ at the end of exp is annoying, so we can remove it using str_remove() within mutate().
+```{r}
+worse <- qpcr_untidy %>% 
+  pivot_longer(-gene,
+               names_to = c("experiment", "replicate"),
+               names_sep = 5,
+               values_to = "mRNA_expression") %>% 
+  mutate(experiment = str_remove(experiment, "_"))
+worse
+```
+We can also reunite using unite().
+```{r}
+worse %>% 
+  unite(new_column, c(experiment, replicate), sep = "_")
+```
+
+We use ggplot for plotting. 
+We use geom_point/geom_jitter for scatterplots to show relationships between two continuous variables.
+```{r}
+lifehistories %>% 
+  ggplot(aes(x = gestation, y = `litter size`))+
+  geom_point()
+```
+We use geom_bar for counts, and geom_col to make barplots.
+```{r}
+lifehistories %>% 
+  ggplot(aes(x = order))+
+  geom_bar()+
+  coord_flip()
+```
+```{r}
+lifehistories %>%
+  filter(family == "Bovidae") %>%
+  top_n(10, mass) %>% 
+  ggplot(aes(x = reorder(species, mass), y = mass))+
+  geom_col()+
+  coord_flip()
+```
+
+We can even color the bars with another variable or by the same variable, and use top_n() to select the top whatever, and use reorder() to make it look nice.
+```{r}
+lifehistories %>%
+  filter(family == "Bovidae") %>%
+  top_n(10, mass) %>% 
+  ggplot(aes(x = reorder(species, mass), y = mass, fill = Genus))+
+  geom_col()+
+  coord_flip()
+```
+
+We use geom_boxplot to make boxplots to show the ranges that a categorical value takes.
+```{r}
+lifehistories %>%
+  filter(order == "Carnivora") %>% 
+  ggplot(aes(x = reorder(family, mass), y = mass))+
+  geom_boxplot()+
+  scale_y_log10()+
+  coord_flip()
+```
+We should also get rid of scientific notation because it is annoying. We use the following code...
+```{r}
+options(scipen=999)#cancels scientific notation for the session
+```
+
+We can use histograms or density plots to show distributions. We use geom_histogram() or geom_density() to produce these.
+```{r}
+lifehistories %>% 
+  ggplot(aes(x = mass))+
+  geom_histogram()+
+  scale_x_log10()
+```
+```{r}
+lifehistories %>% 
+  ggplot(aes(x = `mass`))+
+  geom_density()+
+   scale_x_log10()
+```
+We can even overlay the two.
+```{r}
+lifehistories %>% 
+  ggplot(aes(x = mass))+
+  geom_histogram(aes(y = after_stat(density)),color = "black", fill = "wheat", alpha = 0.5)+
+  geom_density(color = "purple")+
+  scale_x_log10()
+```
+We can use case_when with mutate to turn a continuous variable into a categorical variable. The bottom is an example because I'm too lazy to adapt it for the specific dataset I've been using.
+
+```{r}
+#homerange <- homerange %>% 
+#  mutate(mass_category = case_when(log10.mass <= 1.7 ~ "small",
+#                                   log10.mass > 1.7 & log10.mass <= 3.33 ~ "median",
+#                                   log10.mass > 3.33 ~ "large"))
+```
+
+Finally, we can use facet_grid() and facet_wrap() to essentially compare 2 categorical variables to a continuous variable.
+```{r}
+msleep %>%
+  filter(vore == "carni" | vore == "herbi") %>% 
+  ggplot(aes(x = order, y = sleep_total, fill = order))+
+  geom_boxplot()+
+  facet_wrap(~vore, nrow = 2)+ #nrow does rows ncol does columns 
+  coord_flip()+
+  scale_y_log10()
+```
+This is a horrible example but yeah.
+
+```{r}
+homerange %>% 
+  ggplot(aes(x=taxon, y=log10.mass))+
+  geom_boxplot()+
+  facet_grid(trophic.guild~thermoregulation)+
+  theme(axis.text.x = element_text(angle = 60, hjust=1))
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
