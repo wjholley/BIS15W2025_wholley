@@ -1,0 +1,75 @@
+---
+title: "Testing g"
+output: html_document
+date: "2025-02-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(janitor)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+tf_ps <- read_csv("data/landscapegenetics/genomics_tf_ps.csv")
+```
+```{r}
+tf_ps %>% 
+      group_by(malaria, distpoul_cat) %>% 
+      summarize(n=n(), .groups = 'keep') %>%
+      group_by(distpoul_cat) %>% 
+      mutate(perc = 100*n/sum(n)) %>%
+      filter(malaria == "Y") %>% 
+      ggplot(aes(x = distpoul_cat, y = perc))+
+      geom_col()
+```
+```{r}
+names(tf_ps)
+```
+```{r}
+tf_ps %>%
+      group_by(malaria) %>% 
+      filter(malaria == "Y") %>% 
+      summarize(average_variable = mean(distwater)) %>% 
+      select(average_variable) %>% 
+      .[[1]]
+```
+```{r}
+tf_ps %>%
+      filter(island == "TF") %>% 
+      group_by(malaria, tlr4_prot_1) %>%
+      summarize(n=n(), .groups = 'keep') %>% 
+      group_by(tlr4_prot_1) %>% 
+      mutate(perc = 100*n/sum(n)) %>% 
+      filter(malaria == "Y" & tlr4_prot_1 == "present") %>% 
+      select(perc) %>% 
+      .[[2]]
+```
+
+tf_ps %>%
+      filter(malaria == "Y" | malaria == "N") %>% 
+      ggplot(aes_string(x = "malaria", y = input$malariacont, fill = "malaria")) +
+      geom_boxplot(color = "black", alpha = 0.5, 
+      outlier.shape = ifelse(input$show_outliers, 16, NA)) +  # Toggle outliers
+      theme_stata() +
+      labs(x = "Malaria Status")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
